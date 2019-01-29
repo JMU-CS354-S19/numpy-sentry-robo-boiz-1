@@ -54,19 +54,19 @@ class SentryNode(object):
             
         self.c = depth[:, x/2] # extract central column
         
-        self.c = self.c[~np.isnan(self.c)]
+        #self.c = self.c[~np.isnan(self.c)]
         
         if self.p is not None and self.c is not None:            
             diff_arr = self.c - self.p
             np.absolute(diff_arr)
-            d = np.sum(diff_arr)
+            d = np.nansum(diff_arr)
         
-            #d = 10
             self.avg = self.avg * self.alpha + d * (1-self.alpha)
         
             if d/self.avg > self.threshold:
+                # pub = rospy.Publisher('/mobile_base/commands/sound', std_msgs.msg.String, queue_size=10)
+                # pub.publish('')
                 rospy.loginfo("reached")
-        #rospy.loginfo(depth[:, x/2])
 
 if __name__ == "__main__":
     SentryNode()
